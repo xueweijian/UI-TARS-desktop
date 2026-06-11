@@ -11,7 +11,7 @@ env:
 
 jobs:
   build_win:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,7 +26,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build and package
         run: cd apps/ui-tars && pnpm run build:dist && pnpm run make
