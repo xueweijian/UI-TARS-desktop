@@ -1,0 +1,35 @@
+name: Build Windows exe
+
+on:
+  workflow_dispatch:
+
+env:
+  CI: true
+  NODE_OPTIONS: --max-old-space-size=8192
+  HUSKY: 0
+
+jobs:
+  build_win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        run: npm install -g pnpm@9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build exe
+        run: cd apps/ui-tars && pnpm run make
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: UI-TARS-Windows-exe
+          path: apps/ui-tars/out/make/
