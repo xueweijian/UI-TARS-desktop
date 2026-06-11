@@ -31,13 +31,17 @@ jobs:
       - name: Patch vite config
         shell: pwsh
         run: |
-          $configPath = "apps/ui-tars/electron.vite.config.ts"
-          $content = Get-Content $configPath -Raw
-          # Replace bytecodePlugin call with a no-op plugin to avoid rollup parsing issues
-          $content = $content -replace 'bytecodePlugin\(\{[^}]+\}\)', '(() => ({ name: ""noop-bytecode"", resolveId: () => null }))'
-          # Add electron-debug to externalize list
-          $content = $content -replace 'externalizeDepsPlugin\(\{', 'externalizeDepsPlugin({ exclude: [''electron-debug''],'
-          Set-Content -Path $configPath -Value $content -NoNewline
+           = 'apps/ui-tars/electron.vite.config.ts'
+           = Get-Content  -Raw
+           =  -replace [regex]::Escape("bytecodePlugin({
+        chunkAlias: 'app_private',
+        protectedStrings: [process.env.UI_TARS_APP_PRIVATE_KEY_BASE64!],
+      })"), "{
+        name: 'skip-bytecode',
+        resolveId: () => undefined,
+      }"
+           =  -replace "externalizeDepsPlugin\(\{", "externalizeDepsPlugin({ exclude: ['electron-debug'],"
+          Set-Content -Path  -Value  -NoNewline
 
       - name: Build and package
         run: cd apps/ui-tars && pnpm run build:dist && pnpm run make
