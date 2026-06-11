@@ -29,19 +29,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Patch vite config
-        shell: pwsh
         run: |
-           = 'apps/ui-tars/electron.vite.config.ts'
-           = Get-Content  -Raw
-           =  -replace [regex]::Escape("bytecodePlugin({
-        chunkAlias: 'app_private',
-        protectedStrings: [process.env.UI_TARS_APP_PRIVATE_KEY_BASE64!],
-      })"), "{
-        name: 'skip-bytecode',
-        resolveId: () => undefined,
-      }"
-           =  -replace "externalizeDepsPlugin\(\{", "externalizeDepsPlugin({ exclude: ['electron-debug'],"
-          Set-Content -Path  -Value  -NoNewline
+          node -e "
+          const fs = require('fs');
+          const p = 'apps/ui-tars/electron.vite.config.ts';
+          let c = fs.readFileSync(p, 'utf8');
+          c = c.replace(/bytecodePlugin\(\{[\s\S]*?\}\)/, \"() => ({ name: 'skip-bytecode' })\");
+          c = c.replace('externalizeDepsPlugin({', \"externalizeDepsPlugin({ exclude: ['electron-debug'],\");
+          fs.writeFileSync(p, c);
+          "
 
       - name: Build and package
         run: cd apps/ui-tars && pnpm run build:dist && pnpm run make
