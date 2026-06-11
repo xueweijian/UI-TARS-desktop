@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build exe
-        run: cd apps/ui-tars && pnpm run make
+      - name: Build and package
+        run: cd apps/ui-tars && pnpm run build:dist && pnpm run make
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
