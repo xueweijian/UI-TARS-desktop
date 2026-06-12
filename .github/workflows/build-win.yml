@@ -27,7 +27,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Patch vite config
         shell: bash
@@ -47,7 +47,7 @@ jobs:
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.3.0-latest-win-build
-          name: "UI TARS Desktop (Latest Windows Build)"
-          body: "UI TARS Desktop latest Windows exe installer, built from main branch via GitHub Actions."
+          tag_name: v0.3.0-custom-build
+          name: "UI TARS Desktop - Custom Build (OpenAI Compatible + Chinese)"
+          body: "Custom build with: OpenAI Compatible provider support, user-configurable max_tokens, Chinese localization. Built from latest main."
           files: apps/ui-tars/out/make/**/*
