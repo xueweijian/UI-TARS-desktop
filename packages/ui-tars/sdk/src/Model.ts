@@ -107,7 +107,11 @@ export class UITarsModel extends Model {
       baseURL,
       apiKey,
       model,
-      max_tokens = uiTarsVersion == UITarsModelVersion.V1_5 ? 65535 : 1000,
+      max_tokens = this.modelConfig.max_tokens ?? (uiTarsVersion == UITarsModelVersion.V1_5
+        ? 65535
+        : uiTarsVersion === UITarsModelVersion.OPENAI_COMPATIBLE
+          ? 4096
+          : 1000),
       temperature = 0,
       top_p = 0.7,
       ...restOptions

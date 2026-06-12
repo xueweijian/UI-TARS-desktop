@@ -44,7 +44,7 @@ export function ChatSettings() {
     },
   });
 
-  const [newLanguage, newCount, newInterval] = form.watch([
+  const [new语言, newCount, newInterval] = form.watch([
     'language',
     'maxLoopCount',
     'loopIntervalInMs',
@@ -64,13 +64,13 @@ export function ChatSettings() {
     if (!Object.keys(settings).length) {
       return;
     }
-    if (newLanguage === undefined && newCount === 0 && newInterval === 1000) {
+    if (new语言 === undefined && newCount === 0 && newInterval === 1000) {
       return;
     }
 
     const validAndSave = async () => {
-      if (newLanguage !== settings.language) {
-        updateSetting({ ...settings, language: newLanguage });
+      if (new语言 !== settings.language) {
+        updateSetting({ ...settings, language: new语言 });
       }
 
       const isLoopValid = await form.trigger('maxLoopCount');
@@ -85,7 +85,7 @@ export function ChatSettings() {
     };
 
     validAndSave();
-  }, [newLanguage, newCount, newInterval, settings, updateSetting, form]);
+  }, [new语言, newCount, newInterval, settings, updateSetting, form]);
 
   return (
     <>
@@ -97,13 +97,13 @@ export function ChatSettings() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Language</FormLabel>
+                  <FormLabel>语言</FormLabel>
                   <FormDescription>
-                    Control the language used in LLM conversations
+                    控制模型对话中使用的语言
                   </FormDescription>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select language" />
+                      <SelectValue placeholder="选择语言" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="en">English</SelectItem>
@@ -121,9 +121,9 @@ export function ChatSettings() {
               // console.log('field', field);
               return (
                 <FormItem>
-                  <FormLabel>Max Loop</FormLabel>
+                  <FormLabel>最大循环次数</FormLabel>
                   <FormDescription>
-                    Enter a number between 25-200
+                    请输入 25-200 之间的数字
                   </FormDescription>
                   <FormControl>
                     <Input
@@ -143,12 +143,12 @@ export function ChatSettings() {
             name="loopIntervalInMs"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Loop Wait Time (ms)</FormLabel>
-                <FormDescription>Enter a number between 0-3000</FormDescription>
+                <FormLabel>循环等待时间 (毫秒)</FormLabel>
+                <FormDescription>请输入 0-3000 之间的数字</FormDescription>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter a number between 0-3000"
+                    placeholder="请输入 0-3000 之间的数字"
                     {...field}
                     value={field.value === 0 ? '' : field.value}
                     onChange={(e) => field.onChange(Number(e.target.value))}

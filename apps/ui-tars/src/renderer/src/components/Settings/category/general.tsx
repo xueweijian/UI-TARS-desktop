@@ -28,10 +28,10 @@ export const GeneralSettings = () => {
         });
         return;
       } else if (!detail.isPackaged) {
-        toast.info('Unpackaged version does not support update check!');
+        toast.info('未打包版本不支持更新检查！');
       } else {
-        toast.success('No update available', {
-          description: `current version: ${detail.currentVersion} is the latest version`,
+        toast.success('当前已是最新版本', {
+          description: `当前版本：${detail.currentVersion} 是最新版本`,
           position: 'top-right',
           richColors: true,
         });
@@ -54,16 +54,16 @@ export const GeneralSettings = () => {
         <RefreshCcw
           className={`h-4 w-4 mr-2 ${updateLoading ? 'animate-spin' : ''}`}
         />
-        {updateLoading ? 'Checking...' : 'Check Updates'}
+        {updateLoading ? '检查中...' : '检查更新'}
       </Button>
       {updateDetail?.version && (
         <div className="text-sm text-gray-500">
-          {`${updateDetail.currentVersion} -> ${updateDetail.version}(latest)`}
+          {`${updateDetail.currentVersion} -> ${updateDetail.version}(最新)`}
         </div>
       )}
       {updateDetail?.link && (
         <div className="text-sm text-gray-500">
-          Release Notes:{' '}
+          更新日志：{' '}
           <a
             href={updateDetail.link}
             target="_blank"

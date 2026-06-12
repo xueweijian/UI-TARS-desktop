@@ -170,6 +170,7 @@ export const runAgent = async (
     apiKey: settings.vlmApiKey,
     model: settings.vlmModelName,
     useResponsesApi: settings.useResponsesApi,
+    max_tokens: settings.vlmMaxTokens,
   };
   let modelAuthHdrs: Record<string, string> = {};
 

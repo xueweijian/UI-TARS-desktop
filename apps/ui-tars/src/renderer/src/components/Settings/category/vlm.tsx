@@ -37,12 +37,13 @@ import { api } from '@/renderer/src/api';
 
 const formSchema = z.object({
   vlmProvider: z.nativeEnum(VLMProviderV2, {
-    message: 'Please select a VLM Provider to enhance resolution',
+    message: 'Please select a 模型提供商 to enhance resolution',
   }),
   vlmBaseUrl: z.string().url(),
   vlmApiKey: z.string().min(1),
   vlmModelName: z.string().min(1),
   useResponsesApi: z.boolean().default(false),
+  vlmMaxTokens: z.number().min(100).max(65535).optional(),
 });
 
 export interface VLMSettingsRef {
@@ -80,6 +81,7 @@ export function VLMSettings({
       vlmApiKey: '',
       vlmModelName: '',
       useResponsesApi: false,
+      vlmMaxTokens: undefined,
     },
   });
   useEffect(() => {
@@ -90,17 +92,19 @@ export function VLMSettings({
         vlmApiKey: settings.vlmApiKey,
         vlmModelName: settings.vlmModelName,
         useResponsesApi: settings.useResponsesApi,
+        vlmMaxTokens: settings.vlmMaxTokens,
       });
     }
   }, [settings, form]);
 
-  const [newProvider, newBaseUrl, newApiKey, newModelName, newUseResponsesApi] =
+  const [newProvider, newBaseUrl, newApiKey, newModelName, newUseResponsesApi, newMaxTokens] =
     form.watch([
       'vlmProvider',
       'vlmBaseUrl',
       'vlmApiKey',
       'vlmModelName',
       'useResponsesApi',
+      'vlmMaxTokens',
     ]);
 
   useEffect(() => {
@@ -141,6 +145,11 @@ export function VLMSettings({
       const isNameValid = await form.trigger('vlmModelName');
       if (isNameValid && newModelName !== settings.vlmModelName) {
         updateSetting({ ...settings, vlmModelName: newModelName });
+      }
+
+      const isMaxTokensValid = await form.trigger('vlmMaxTokens');
+      if (isMaxTokensValid && newMaxTokens !== settings.vlmMaxTokens) {
+        updateSetting({ ...settings, vlmMaxTokens: newMaxTokens });
       }
 
       const isResponsesApiValid = await form.trigger('useResponsesApi');
@@ -184,9 +193,9 @@ export function VLMSettings({
       await updatePresetFromRemote();
       // toast.success('Preset updated successfully');
     } catch (error) {
-      toast.error('Failed to update preset', {
+      toast.error('更新预设失败', {
         description:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+          error instanceof Error ? error.message : '未知错误',
       });
     }
   };
@@ -196,7 +205,7 @@ export function VLMSettings({
     e.stopPropagation();
 
     await window.electron.setting.resetPreset();
-    toast.success('Reset to manual mode successfully', {
+    toast.success('已重置为手动配置', {
       duration: 1500,
     });
   };
@@ -217,7 +226,7 @@ export function VLMSettings({
           !modelConfig.modelName
         ) {
           toast.error(
-            'Please fill in all required fields before enabling Response API',
+            '启用 Response API 前请先填写所有必填字段',
           );
           setIsCheckingResponseApi(false);
           return;
@@ -244,7 +253,7 @@ export function VLMSettings({
     console.log('onSubmit', values);
 
     updateSetting({ ...settings, ...values });
-    toast.success('Settings saved successfully');
+    toast.success('设置已保存');
   };
 
   useImperativeHandle(ref, () => ({
@@ -274,7 +283,7 @@ export function VLMSettings({
         <form className={cn('space-y-8 px-[1px]', className)}>
           {!isRemoteAutoUpdatedPreset && (
             <Button type="button" variant="outline" onClick={handlePresetModal}>
-              Import Preset Config
+              导入预设配置
             </Button>
           )}
           {isRemoteAutoUpdatedPreset && (
@@ -286,21 +295,21 @@ export function VLMSettings({
             />
           )}
 
-          {/* VLM Provider */}
+          {/* 模型提供商 */}
           <FormField
             control={form.control}
             name="vlmProvider"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>VLM Provider</FormLabel>
+                  <FormLabel>模型提供商</FormLabel>
                   <Select
                     disabled={isRemoteAutoUpdatedPreset}
                     onValueChange={field.onChange}
                     value={field.value}
                   >
                     <SelectTrigger className="w-full bg-white">
-                      <SelectValue placeholder="Select VLM provider" />
+                      <SelectValue placeholder="选择模型提供商" />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.values(VLMProviderV2).map((provider) => (
@@ -315,17 +324,17 @@ export function VLMSettings({
               );
             }}
           />
-          {/* VLM Base URL */}
+          {/* 接口地址 */}
           <FormField
             control={form.control}
             name="vlmBaseUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>VLM Base URL</FormLabel>
+                <FormLabel>接口地址</FormLabel>
                 <FormControl>
                   <Input
                     className="bg-white"
-                    placeholder="Enter VLM Base URL"
+                    placeholder="Enter 接口地址"
                     {...field}
                     disabled={isRemoteAutoUpdatedPreset}
                   />
@@ -334,19 +343,19 @@ export function VLMSettings({
               </FormItem>
             )}
           />
-          {/* VLM API Key */}
+          {/* API 密钥 */}
           <FormField
             control={form.control}
             name="vlmApiKey"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>VLM API Key</FormLabel>
+                <FormLabel>API 密钥</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       className="bg-white"
-                      placeholder="Enter VLM API_Key"
+                      placeholder="输入 API 密钥"
                       {...field}
                       disabled={isRemoteAutoUpdatedPreset}
                     />
@@ -369,17 +378,17 @@ export function VLMSettings({
               </FormItem>
             )}
           />
-          {/* VLM Model Name */}
+          {/* 模型名称 */}
           <FormField
             control={form.control}
             name="vlmModelName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>VLM Model Name</FormLabel>
+                <FormLabel>模型名称</FormLabel>
                 <FormControl>
                   <Input
                     className="bg-white"
-                    placeholder="Enter VLM Model Name"
+                    placeholder="Enter 模型名称"
                     {...field}
                     disabled={isRemoteAutoUpdatedPreset}
                   />
@@ -388,6 +397,29 @@ export function VLMSettings({
             )}
           />
 
+
+          {/* Max Tokens */}
+          <FormField
+            control={form.control}
+            name="vlmMaxTokens"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>最大输出 Token 数</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-white"
+                    type="number"
+                    placeholder="留空使用默认值 (1000-65535)"
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    disabled={isRemoteAutoUpdatedPreset}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {/* Model Availability Check */}
           <ModelAvailabilityCheck
             modelConfig={{
@@ -404,7 +436,7 @@ export function VLMSettings({
             name="useResponsesApi"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Use Responses API</FormLabel>
+                <FormLabel>使用 Responses API</FormLabel>
                 <FormControl>
                   <div className="flex items-center gap-3">
                     <Switch
@@ -415,13 +447,13 @@ export function VLMSettings({
                     />
                     {responseApiSupported === false && (
                       <p className="text-sm text-red-500">
-                        Response API is not supported by this model
+                        此模型不支持 Response API
                       </p>
                     )}
                     {isCheckingResponseApi && (
                       <p className="text-sm text-muted-foreground flex items-center">
                         <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                        Checking Response API support...
+                        正在检测 Response API 支持...
                       </p>
                     )}
                   </div>
@@ -493,7 +525,7 @@ export function ModelAvailabilityCheck({
 
     if (!isConfigValid) {
       toast.error(
-        'Please fill in all required fields before checking model availability',
+        '检测模型可用性前请先填写所有必填字段',
       );
       return;
     }
@@ -511,8 +543,8 @@ export function ModelAvailabilityCheck({
       if (isAvailable) {
         const successMessage = `Model "${modelName}" is available and working correctly${
           responseApiSupported
-            ? '. Response API is supported.'
-            : '. But Response API is not supported.'
+            ? '，支持 Response API。'
+            : '，但不支持 Response API。'
         }`;
         setCheckState({
           status: 'success',
@@ -533,8 +565,8 @@ export function ModelAvailabilityCheck({
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error occurred';
-      const fullErrorMessage = `Failed to connect to model: ${errorMessage}`;
+        error instanceof Error ? error.message : '未知错误';
+      const fullErrorMessage = `连接模型失败：${errorMessage}`;
 
       setCheckState({
         status: 'error',
@@ -564,10 +596,10 @@ export function ModelAvailabilityCheck({
         {checkState.status === 'checking' ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Checking Model...
+            检测中...
           </>
         ) : (
-          'Check Model Availability'
+          '检测模型可用性'
         )}
       </Button>
 

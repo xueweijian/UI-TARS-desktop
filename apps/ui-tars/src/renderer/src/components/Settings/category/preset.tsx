@@ -40,12 +40,12 @@ interface PresetBannerProps {
   handleResetPreset: (e: React.MouseEvent) => void;
 }
 
-interface PresetImportProps {
+interface Preset导入Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function PresetImport({ isOpen, onClose }: PresetImportProps) {
+export function Preset导入({ isOpen, onClose }: Preset导入Props) {
   const [remoteUrl, setRemoteUrl] = useState('');
   const [autoUpdate, setAutoUpdate] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -64,25 +64,25 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
       });
 
       await importPresetFromText(yamlText);
-      toast.success('Preset imported successfully');
+      toast.success('预设导入成功');
       onClose();
     } catch (error) {
-      toast.error('Failed to import preset', {
+      toast.error('导入预设失败', {
         description:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+          error instanceof Error ? error.message : '未知错误',
       });
     }
   };
 
-  const handleRemoteImport = async () => {
+  const handleRemote导入 = async () => {
     try {
       await importPresetFromUrl(remoteUrl, autoUpdate);
-      toast.success('Preset imported successfully');
+      toast.success('预设导入成功');
       onClose();
     } catch (error) {
-      toast.error('Failed to import preset', {
+      toast.error('导入预设失败', {
         description:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+          error instanceof Error ? error.message : '未知错误',
       });
     }
   };
@@ -91,22 +91,22 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>Import Preset</DialogTitle>
+          <DialogTitle>导入预设</DialogTitle>
           <DialogDescription>
-            Import the preset model configuration file.
+            导入预设模型配置文件。
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="local" className="w-full mb-6">
           <TabsList className="grid w-full grid-cols-2 mb-2">
-            <TabsTrigger value="local">Local File</TabsTrigger>
-            <TabsTrigger value="remote">Remote URL</TabsTrigger>
+            <TabsTrigger value="local">本地文件</TabsTrigger>
+            <TabsTrigger value="remote">远程地址</TabsTrigger>
           </TabsList>
 
           <TabsContent value="local" className="space-y-4">
             <div className="flex flex-col items-center gap-4">
               <DialogDescription>
-                Select a YAML file to import settings preset
+                选择 YAML 文件导入配置预设
               </DialogDescription>
               <input
                 type="file"
@@ -119,7 +119,7 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
                 variant="outline"
                 onClick={() => fileInputRef.current?.click()}
               >
-                Choose File
+                选择文件
               </Button>
             </div>
           </TabsContent>
@@ -127,7 +127,7 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
           <TabsContent value="remote" className="space-y-4">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor="preset-url">Preset URL</Label>
+                <Label htmlFor="preset-url">预设地址</Label>
                 <Input
                   id="preset-url"
                   value={remoteUrl}
@@ -136,7 +136,7 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
                 />
               </div>
               <div className="flex items-center space-x-2">
-                <Label htmlFor="auto-update">Auto update on startup</Label>
+                <Label htmlFor="auto-update">启动时自动更新</Label>
                 <Switch
                   id="auto-update"
                   checked={autoUpdate}
@@ -151,8 +151,8 @@ export function PresetImport({ isOpen, onClose }: PresetImportProps) {
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={handleRemoteImport} disabled={!remoteUrl}>
-            Import
+          <Button onClick={handleRemote导入} disabled={!remoteUrl}>
+            导入
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -166,7 +166,7 @@ export function PresetBanner(props: PresetBannerProps) {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className="font-medium text-gray-700">
-            Remote Preset Management
+            远程预设管理
           </span>
           <TooltipProvider>
             <CNTooltip>
@@ -174,7 +174,7 @@ export function PresetBanner(props: PresetBannerProps) {
                 <Info className="w-4 h-4 text-gray-400 hover:text-gray-500" />
               </TooltipTrigger>
               <TooltipContent>
-                When using remote preset, settings will be read-only
+                使用远程预设时，设置将变为只读
               </TooltipContent>
             </CNTooltip>
           </TooltipProvider>
@@ -184,7 +184,7 @@ export function PresetBanner(props: PresetBannerProps) {
           <p className="text-sm text-gray-600 line-clamp-2">{props.url}</p>
           {props.date && (
             <p className="text-xs text-gray-500 mt-1">
-              {`Last updated: ${new Date(props.date).toLocaleString()}`}
+              {`最后更新：${new Date(props.date).toLocaleString()}`}
             </p>
           )}
         </div>
@@ -195,7 +195,7 @@ export function PresetBanner(props: PresetBannerProps) {
           className="mb-0"
           onClick={props.handleUpdatePreset}
         >
-          Update Preset
+          更新预设
         </Button>
 
         <Button
@@ -204,7 +204,7 @@ export function PresetBanner(props: PresetBannerProps) {
           className="text-red-400 border-red-400 hover:bg-red-50 hover:text-red-500 ml-4 mb-0"
           onClick={props.handleResetPreset}
         >
-          Reset to Manual
+          重置为手动配置
         </Button>
       </div>
     </Card>

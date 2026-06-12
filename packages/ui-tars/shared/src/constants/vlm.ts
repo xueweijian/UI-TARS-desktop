@@ -24,6 +24,7 @@ export enum UITarsModelVersion {
   V1_5 = '1.5',
   DOUBAO_1_5_15B = 'doubao-1.5-15B',
   DOUBAO_1_5_20B = 'doubao-1.5-20B',
+  OPENAI_COMPATIBLE = 'openai-compatible',
 }
 
 export const VlmModeEnumOptions = {

@@ -4,6 +4,7 @@
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { UITarsModel } from '../src/Model';
+import { UITarsModelVersion } from '@ui-tars/shared/types';
 
 // Mock OpenAI
 const mockCreate = vi.fn();
@@ -1010,5 +1011,131 @@ describe('UITarsModel', () => {
       );
       expect(mockResponsesCreate).toHaveBeenCalledTimes(7);
     });
-  });
+
+  describe('max_tokens configuration', () => {
+    it('should use user-provided max_tokens when specified', async () => {
+      const model = new UITarsModel({
+        apiKey: 'test-key',
+        baseURL: 'https://test.com',
+        model: 'test-model',
+        max_tokens: 8192,
+        useResponsesApi: false,
+      });
+
+      mockCreate.mockResolvedValue({
+        choices: [{ message: { content: 'Thought: test\nAction: click(start_box="(100,200)")' } }],
+        usage: { total_tokens: 100 },
+      });
+
+      await model.invoke({
+        conversations: [
+          { from: 'human', value: 'Do something' },
+          { from: 'human', value: '<image>' },
+        ],
+        images: ['base64image'],
+        screenContext: { width: 1920, height: 1080 },
+        uiTarsVersion: UITarsModelVersion.OPENAI_COMPATIBLE,
+      });
+
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          max_tokens: 8192,
+        }),
+        expect.any(Object),
+      );
+    });
+
+    it('should fallback to default max_tokens when not specified for OPENAI_COMPATIBLE', async () => {
+      const model = new UITarsModel({
+        apiKey: 'test-key',
+        baseURL: 'https://test.com',
+        model: 'test-model',
+        useResponsesApi: false,
+      });
+
+      mockCreate.mockResolvedValue({
+        choices: [{ message: { content: 'Thought: test\nAction: click(start_box="(100,200)")' } }],
+        usage: { total_tokens: 100 },
+      });
+
+      await model.invoke({
+        conversations: [
+          { from: 'human', value: 'Do something' },
+          { from: 'human', value: '<image>' },
+        ],
+        images: ['base64image'],
+        screenContext: { width: 1920, height: 1080 },
+        uiTarsVersion: UITarsModelVersion.OPENAI_COMPATIBLE,
+      });
+
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          max_tokens: 4096,
+        }),
+        expect.any(Object),
+      );
+    });
+
+    it('should fallback to 1000 for V1_0 when no user max_tokens', async () => {
+      const model = new UITarsModel({
+        apiKey: 'test-key',
+        baseURL: 'https://test.com',
+        model: 'test-model',
+        useResponsesApi: false,
+      });
+
+      mockCreate.mockResolvedValue({
+        choices: [{ message: { content: 'Thought: test\nAction: click(start_box="(100,200)")' } }],
+        usage: { total_tokens: 100 },
+      });
+
+      await model.invoke({
+        conversations: [
+          { from: 'human', value: 'Do something' },
+          { from: 'human', value: '<image>' },
+        ],
+        images: ['base64image'],
+        screenContext: { width: 1920, height: 1080 },
+        uiTarsVersion: UITarsModelVersion.V1_0,
+      });
+
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          max_tokens: 1000,
+        }),
+        expect.any(Object),
+      );
+    });
+
+    it('should fallback to 65535 for V1_5 when no user max_tokens', async () => {
+      const model = new UITarsModel({
+        apiKey: 'test-key',
+        baseURL: 'https://test.com',
+        model: 'test-model',
+        useResponsesApi: false,
+      });
+
+      mockCreate.mockResolvedValue({
+        choices: [{ message: { content: 'Thought: test\nAction: click(start_box="(100,200)")' } }],
+        usage: { total_tokens: 100 },
+      });
+
+      await model.invoke({
+        conversations: [
+          { from: 'human', value: 'Do something' },
+          { from: 'human', value: '<image>' },
+        ],
+        images: ['base64image'],
+        screenContext: { width: 1920, height: 1080 },
+        uiTarsVersion: UITarsModelVersion.V1_5,
+      });
+
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          max_tokens: 65535,
+        }),
+        expect.any(Object),
+      );
+    });
+  });  });
 });

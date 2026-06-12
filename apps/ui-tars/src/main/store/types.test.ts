@@ -11,6 +11,8 @@ describe('VLMProviderV2', () => {
       [VLMProviderV2.ui_tars_1_0, 'Hugging Face for UI-TARS-1.0'],
       [VLMProviderV2.ui_tars_1_5, 'Hugging Face for UI-TARS-1.5'],
       [VLMProviderV2.doubao_1_5, 'VolcEngine Ark for Doubao-1.5-UI-TARS'],
+      [VLMProviderV2.doubao_1_5_vl, 'VolcEngine Ark for Doubao-1.5-thinking-vision-pro'],
+      [VLMProviderV2.openai_compatible, 'OpenAI Compatible'],
     ];
 
     cases.forEach(([provider, expected]) => {
@@ -25,6 +27,6 @@ describe('VLMProviderV2', () => {
 
   it('should contain exactly three providers', () => {
     const providerCount = Object.keys(VLMProviderV2).length;
-    expect(providerCount).toBe(3);
+    expect(providerCount).toBe(5);
   });
 });

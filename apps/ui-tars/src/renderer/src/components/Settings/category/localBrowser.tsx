@@ -82,11 +82,11 @@ export function LocalBrowserSettings() {
             name="searchEngineForBrowser"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Default Search Engine:</FormLabel>
+                <FormLabel>默认搜索引擎：</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className="w-[124px]">
-                      <SelectValue placeholder="Select a search engine" />
+                      <SelectValue placeholder="选择搜索引擎" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>

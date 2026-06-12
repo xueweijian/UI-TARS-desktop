@@ -32,6 +32,8 @@ export const getModelVersion = (
       return UITarsModelVersion.DOUBAO_1_5_15B;
     case VLMProviderV2.doubao_1_5_vl:
       return UITarsModelVersion.DOUBAO_1_5_20B;
+    case VLMProviderV2.openai_compatible:
+      return UITarsModelVersion.OPENAI_COMPATIBLE;
     default:
       return UITarsModelVersion.V1_0;
   }
@@ -49,6 +51,8 @@ export const getSpByModelVersion = (
       return getSystemPromptDoubao_15_15B(language);
     case UITarsModelVersion.V1_5:
       return getSystemPromptV1_5(language, 'normal');
+    case UITarsModelVersion.OPENAI_COMPATIBLE:
+      return getSystemPrompt(language);
     default:
       return getSystemPrompt(language);
   }

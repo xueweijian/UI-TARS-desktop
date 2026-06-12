@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025 Bytedance, Inc. and its affiliates.
+ * Copyright (c) 2025 Bytedance, Inc. 和 its affiliates.
  * SPDX-License-Identifier: Apache-2.0
  */
 import { useState } from 'react';
@@ -119,7 +119,7 @@ const Home = () => {
     });
   };
 
-  const handleLocalPress = async (operator: Operator) => {
+  const h和leLocalPress = async (operator: Operator) => {
     const hasVLM = await checkVLMSettings();
 
     if (hasVLM) {
@@ -129,7 +129,7 @@ const Home = () => {
     }
   };
 
-  const handleFreeDialogComfirm = async () => {
+  const h和leFreeDialogComfirm = async () => {
     if (remoteConfig.operator === Operator.RemoteBrowser) {
       toRemoteBrowser('free');
     } else {
@@ -137,11 +137,11 @@ const Home = () => {
     }
   };
 
-  const handleRemoteDialogClose = (status: boolean) => {
+  const h和leRemoteDialogClose = (status: boolean) => {
     setRemoteConfig({ open: status, operator: remoteConfig.operator });
   };
 
-  const handleLocalSettingsSubmit = async () => {
+  const h和leLocalSettingsSubmit = async () => {
     setLocalConfig({ open: false, operator: localConfig.operator });
 
     await sleep(200);
@@ -149,7 +149,7 @@ const Home = () => {
     await toLocal(localConfig.operator);
   };
 
-  const handleLocalSettingsClose = () => {
+  const h和leLocalSettingsClose = () => {
     setLocalConfig({ open: false, operator: localConfig.operator });
   };
   /** local click logic end */
@@ -159,15 +159,14 @@ const Home = () => {
       <DragArea></DragArea>
       <div className="w-full h-full flex flex-col items-center justify-center">
         <h1 className="text-2xl font-semibold mt-1 mb-8">
-          Welcome to UI-TARS Desktop
+          欢迎使用 UI-TARS 桌面版
         </h1>
         <Alert className="mb-4 w-[824px]">
           <Info className="h-4 w-4 mt-2" />
           <AlertDescription>
             <div className="flex items-center">
               <p className="text-sm text-muted-foreground">
-                You can also experience the remote versions on Volcano
-                Engine:&nbsp;
+                你也可以在火山引擎上体验远程版本：&nbsp;
               </p>
               <Button
                 variant="link"
@@ -179,9 +178,9 @@ const Home = () => {
                   )
                 }
               >
-                Computer Operator
+                电脑操作器
               </Button>
-              <span>&nbsp;and&nbsp;</span>
+              <span>&nbsp;和&nbsp;</span>
               <Button
                 variant="link"
                 className="p-0 text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
@@ -192,7 +191,7 @@ const Home = () => {
                   )
                 }
               >
-                Browser Operator
+                浏览器操作器
               </Button>
             </div>
           </AlertDescription>
@@ -200,9 +199,9 @@ const Home = () => {
         <div className="flex gap-6">
           <Card className="w-[400px] py-5">
             <CardHeader className="px-5">
-              <CardTitle>Computer Operator</CardTitle>
+              <CardTitle>电脑操作器</CardTitle>
               <CardDescription>
-                Use the UI-TARS model to automate and complete tasks directly on
+                Use the UI-TARS model to automate 和 complete tasks directly on
                 your computer with AI assistance.
               </CardDescription>
             </CardHeader>
@@ -215,16 +214,16 @@ const Home = () => {
             </CardContent>
             <CardFooter className="gap-3 px-5 flex justify-between">
               <Button
-                onClick={() => handleLocalPress(Operator.LocalComputer)}
+                onClick={() => h和leLocalPress(Operator.LocalComputer)}
                 className="w-full"
               >
-                Use Local Computer
+                使用本地电脑
               </Button>
             </CardFooter>
           </Card>
           <Card className="w-[400px] py-5">
             <CardHeader className="px-5">
-              <CardTitle>Browser Operator</CardTitle>
+              <CardTitle>浏览器操作器</CardTitle>
               <CardDescription>
                 Let the UI-TARS model help you automate browser tasks, from
                 navigating pages to filling out forms.
@@ -239,23 +238,23 @@ const Home = () => {
             </CardContent>
             <CardFooter className="gap-3 px-5 flex justify-between">
               <Button
-                onClick={() => handleLocalPress(Operator.LocalBrowser)}
+                onClick={() => h和leLocalPress(Operator.LocalBrowser)}
                 className="w-full"
               >
-                Use Local Browser
+                使用本地浏览器
               </Button>
             </CardFooter>
           </Card>
         </div>
         <LocalSettingsDialog
           isOpen={localConfig.open}
-          onSubmit={handleLocalSettingsSubmit}
-          onClose={handleLocalSettingsClose}
+          onSubmit={h和leLocalSettingsSubmit}
+          onClose={h和leLocalSettingsClose}
         />
         <FreeTrialDialog
           open={remoteConfig.open}
-          onOpenChange={handleRemoteDialogClose}
-          onConfirm={handleFreeDialogComfirm}
+          onOpenChange={h和leRemoteDialogClose}
+          onConfirm={h和leFreeDialogComfirm}
         />
       </div>
       <DragArea></DragArea>

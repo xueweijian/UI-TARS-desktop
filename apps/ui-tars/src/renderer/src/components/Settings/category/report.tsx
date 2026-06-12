@@ -85,7 +85,7 @@ export function ReportSettings() {
             name="reportStorageBaseUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Report Storage Base URL</FormLabel>
+                <FormLabel>报告存储地址</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="https://your-report-storage-endpoint.com/upload"
@@ -96,13 +96,13 @@ export function ReportSettings() {
               </FormItem>
             )}
           />
-          {/* UTIO Base URL */}
+          {/* UTIO 地址 */}
           <FormField
             control={form.control}
             name="utioBaseUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>UTIO Base URL</FormLabel>
+                <FormLabel>UTIO 地址</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="https://your-utio-endpoint.com/collect"

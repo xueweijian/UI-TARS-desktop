@@ -60,35 +60,35 @@ export const GlobalSettings = () => {
                 className="w-full justify-start gap-2 px-2 py-1.5 mb-2 !shadow-none font-normal data-[state=active]:font-medium data-[state=active]:bg-accent data-[state=active]:text-accent-foreground hover:bg-accent/50"
               >
                 <Sparkles strokeWidth={2} />
-                VLM Settings
+                模型设置
               </TabsTrigger>
               <TabsTrigger
                 value="chat"
                 className="w-full justify-start gap-2 px-2 py-1.5 mb-2 !shadow-none font-normal data-[state=active]:font-medium data-[state=active]:bg-accent data-[state=active]:text-accent-foreground hover:bg-accent/50"
               >
                 <MessagesSquare strokeWidth={2} />
-                Chat Settings
+                对话设置
               </TabsTrigger>
               <TabsTrigger
                 value="operator"
                 className="w-full justify-start gap-2 px-2 py-1.5 mb-2 !shadow-none font-normal data-[state=active]:font-medium data-[state=active]:bg-accent data-[state=active]:text-accent-foreground hover:bg-accent/50"
               >
                 <Cpu strokeWidth={2} />
-                Operator Settings
+                操作器设置
               </TabsTrigger>
               <TabsTrigger
                 value="report"
                 className="w-full justify-start gap-2 px-2 py-1.5 mb-2 !shadow-none font-normal data-[state=active]:font-medium data-[state=active]:bg-accent data-[state=active]:text-accent-foreground hover:bg-accent/50"
               >
                 <FileText strokeWidth={2} />
-                Report Settings
+                报告设置
               </TabsTrigger>
               <TabsTrigger
                 value="general"
                 className="w-full justify-start gap-2 px-2 py-1.5 mb-2 !shadow-none font-normal data-[state=active]:font-medium data-[state=active]:bg-accent data-[state=active]:text-accent-foreground hover:bg-accent/50"
               >
                 <Settings strokeWidth={2} />
-                General Settings
+                通用设置
               </TabsTrigger>
             </TabsList>
           </div>
@@ -96,14 +96,14 @@ export const GlobalSettings = () => {
           <div className="flex-1">
             <TabsContent value="vlm" className="mt-0">
               <ScrollArea className="h-[calc(80vh-48px)]">
-                <h2 className="text-xl font-semibold mb-3">VLM Settings</h2>
+                <h2 className="text-xl font-semibold mb-3">模型设置</h2>
                 <Separator className="mb-4" />
                 <VLMSettings autoSave={true} />
               </ScrollArea>
             </TabsContent>
 
             <TabsContent value="chat" className="mt-0">
-              <h2 className="text-xl font-semibold mb-3">Chat Settings</h2>
+              <h2 className="text-xl font-semibold mb-3">对话设置</h2>
               <Separator className="mb-4" />
               <ChatSettings />
             </TabsContent>
@@ -111,22 +111,22 @@ export const GlobalSettings = () => {
             <TabsContent value="operator" className="mt-0 flex-1">
               <ScrollArea className="h-[calc(80vh-48px)]">
                 <h2 className="text-xl font-semibold mb-3">
-                  Local Operator Settings
+                  Local 操作器设置
                 </h2>
                 <Separator className="mb-4" />
                 <h3 className="text-lg font-semibold mt-5 mb-3">
-                  Local Browser Operator
+                  本地浏览器操作器
                 </h3>
                 <LocalBrowserSettings />
               </ScrollArea>
             </TabsContent>
             <TabsContent value="report" className="mt-0">
-              <h2 className="text-xl font-semibold mb-3">Report Settings</h2>
+              <h2 className="text-xl font-semibold mb-3">报告设置</h2>
               <Separator className="mb-4" />
               <ReportSettings />
             </TabsContent>
             <TabsContent value="general" className="mt-0">
-              <h2 className="text-xl font-semibold mb-3">General Settings</h2>
+              <h2 className="text-xl font-semibold mb-3">通用设置</h2>
               <Separator className="mb-4" />
               <GeneralSettings />
             </TabsContent>
