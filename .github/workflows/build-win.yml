@@ -3,6 +3,9 @@ name: Build Windows exe
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   CI: true
   NODE_OPTIONS: --max-old-space-size=8192
@@ -14,8 +17,6 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: v0.3.0
 
       - name: Install pnpm
         run: npm install -g pnpm@9
@@ -46,7 +47,7 @@ jobs:
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.3.0-win-build
-          name: UI TARS Desktop v0.3.0 (Windows Build)
-          body: "UI TARS Desktop v0.3.0 Windows exe installer, built from source via GitHub Actions."
+          tag_name: v0.3.0-latest-win-build
+          name: "UI TARS Desktop (Latest Windows Build)"
+          body: "UI TARS Desktop latest Windows exe installer, built from main branch via GitHub Actions."
           files: apps/ui-tars/out/make/**/*
