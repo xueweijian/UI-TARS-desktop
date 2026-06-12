@@ -40,12 +40,12 @@ interface PresetBannerProps {
   handleResetPreset: (e: React.MouseEvent) => void;
 }
 
-interface Preset导入Props {
+interface PresetImportProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function Preset导入({ isOpen, onClose }: Preset导入Props) {
+export function PresetImport({ isOpen, onClose }: PresetImportProps) {
   const [remoteUrl, setRemoteUrl] = useState('');
   const [autoUpdate, setAutoUpdate] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
