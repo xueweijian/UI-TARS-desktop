@@ -43,8 +43,10 @@ jobs:
       - name: Build and package
         run: cd apps/ui-tars && pnpm run build:dist && pnpm run make
 
-      - name: Upload installer
-        uses: actions/upload-artifact@v4
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: UI-TARS-Windows-exe
-          path: apps/ui-tars/out/make/
+          tag_name: v0.3.0-win-build
+          name: UI TARS Desktop v0.3.0 (Windows Build)
+          body: "UI TARS Desktop v0.3.0 Windows exe installer, built from source via GitHub Actions."
+          files: apps/ui-tars/out/make/**/*
